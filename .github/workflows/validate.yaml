@@ -1,0 +1,21 @@
+name: Validate Module
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+jobs:
+  build:
+    name: Validate Terraform Module
+    runs-on: ubuntu-18.04
+    container:
+      image: docker.io/hashicorp/terraform:0.12.24
+    steps:
+    - name: git checkout
+      uses: actions/checkout@v2
+    - name: Initialize Terraform
+      run: terraform init -backend=false
+    - name: Validate Terraform Module Syntax
+      run: terraform validate
