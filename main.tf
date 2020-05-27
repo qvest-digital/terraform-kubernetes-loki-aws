@@ -181,7 +181,7 @@ resource "kubernetes_config_map" "this" {
           }
           final_sleep = "0s"
         }
-        chunk_idle_period = "5m"
+        chunk_idle_period   = "5m"
         chunk_retain_period = "30s"
       }
       schema_config = {
@@ -215,8 +215,8 @@ resource "kubernetes_config_map" "this" {
         }
       }
       limits_config = {
-        enforce_metric_name = false
-        reject_old_samples = true
+        enforce_metric_name        = false
+        reject_old_samples         = true
         reject_old_samples_max_age = "168h"
       }
     })
@@ -388,12 +388,12 @@ resource "kubernetes_deployment" "this" {
           }
           resources {
             limits {
-              cpu    = "100m"
-              memory = "320Mi"
+              cpu    = var.k8s_pod_container_resources.limits.cpu
+              memory = var.k8s_pod_container_resources.limits.memory
             }
             requests {
-              cpu    = "50m"
-              memory = "256Mi"
+              cpu    = var.k8s_pod_container_resources.requests.cpu
+              memory = var.k8s_pod_container_resources.requests.memory
             }
           }
           security_context {

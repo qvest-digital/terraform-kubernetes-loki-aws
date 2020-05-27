@@ -21,6 +21,30 @@ variable "k8s_pod_annotations" {
   default     = {}
 }
 
+variable "k8s_pod_container_resources" {
+  description = "Resource requests/limits to set."
+  type = object({
+    limits = object({
+      cpu    = string
+      memory = string
+    })
+    requests = object({
+      cpu    = string
+      memory = string
+    })
+  })
+  default = {
+    limits = {
+      cpu    = null
+      memory = null
+    }
+    requests = {
+      cpu    = "1000m"
+      memory = "256Mi"
+    }
+  }
+}
+
 variable "k8s_replicas" {
   description = "Amount of Loki replicas to spawn."
   type        = number
