@@ -249,7 +249,7 @@ resource "kubernetes_service" "this" {
     }
     port {
       name        = "http-api"
-      port        = 80
+      port        = 3100
       protocol    = "TCP"
       target_port = "http"
     }
