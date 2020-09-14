@@ -143,6 +143,7 @@ resource "aws_iam_role_policy_attachment" "this" {
 resource "aws_s3_bucket" "chunks" {
   bucket = "${var.aws_resource_name_prefix}${var.k8s_cluster_name}-loki-chunks"
   acl    = "private"
+  force_destroy = true
   tags   = var.aws_tags
   versioning {
     enabled = false
