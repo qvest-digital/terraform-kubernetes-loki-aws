@@ -35,8 +35,8 @@ variable "k8s_pod_container_resources" {
   })
   default = {
     limits = {
-      cpu    = null
-      memory = null
+      cpu    = "2000m"
+      memory = "1024Mi"
     }
     requests = {
       cpu    = "1000m"
