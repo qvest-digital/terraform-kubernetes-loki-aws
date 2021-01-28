@@ -1,7 +1,7 @@
 resource "kubernetes_ingress" "loki" {
   metadata {
     name = "loki"
-    namespace: "monitoring"
+    namespace = "monitoring"
 
     annotations = {
       "ingress.kubernetes.io/auth-secret" = "secret"
