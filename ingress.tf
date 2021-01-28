@@ -4,8 +4,8 @@ resource "kubernetes_ingress" "loki" {
     namespace = "monitoring"
 
     annotations = {
-      "ingress.kubernetes.io/auth-secret" = "secret"
-      "ingress.kubernetes.io/auth-type"   = "basic"
+      "ingress.kubernetes.io/auth-secret" = loki-auth
+      "ingress.kubernetes.io/auth-type"   = basic
       "kubernetes.io/ingress.class"       = "nginx"
     }
   }
