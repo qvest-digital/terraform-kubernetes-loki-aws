@@ -4,9 +4,10 @@ resource "kubernetes_ingress" "loki" {
     namespace = "monitoring"
 
     annotations = {
-      "ingress.kubernetes.io/auth-secret" = "loki-auth"
-      "ingress.kubernetes.io/auth-type"   = "basic"
+      "nginx.ingress.kubernetes.io/auth-secret" = "loki-auth"
+      "nginx.kubernetes.io/auth-type"   = "basic"
       "kubernetes.io/ingress.class"       = "nginx"
+      "nginx.ingress.kubernetes.io/auth-realm" = "Authentication Required"
     }
   }
 
