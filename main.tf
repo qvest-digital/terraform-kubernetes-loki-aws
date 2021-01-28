@@ -388,11 +388,11 @@ resource "kubernetes_deployment" "this" {
             initial_delay_seconds = 30
           }
           resources {
-            limits {
+            limits = {
               cpu    = var.k8s_pod_container_resources.limits.cpu
               memory = var.k8s_pod_container_resources.limits.memory
             }
-            requests {
+            requests = {
               cpu    = var.k8s_pod_container_resources.requests.cpu
               memory = var.k8s_pod_container_resources.requests.memory
             }
