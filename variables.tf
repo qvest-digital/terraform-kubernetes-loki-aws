@@ -97,3 +97,9 @@ variable "loki_version" {
   type        = string
   default     = "1.5.0"
 }
+
+variable "loki_ingress_host" {
+  description = "Loki ingress hostname"
+  type        = string
+  default     = "loki"
+}
