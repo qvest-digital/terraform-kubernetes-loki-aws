@@ -102,3 +102,24 @@ variable "loki_ingress_host" {
   description = "Loki ingress hostname"
   type        = string
 }
+
+variable "namespace" {
+  type        = string
+  description = "Namespace, which could be your organization name, e.g. 'eg' or 'cp'"
+}
+
+variable "stage" {
+  type        = string
+  description = "Stage, e.g. 'prod', 'staging', 'dev' or 'testing'"
+}
+
+variable "name" {
+  type        = string
+  description = "Solution name, e.g. 'app' or 'cluster'"
+}
+
+
+variable "loki_rules" {
+  #type        = string
+  #description = "Solution name, e.g. 'app' or 'cluster'"
+}

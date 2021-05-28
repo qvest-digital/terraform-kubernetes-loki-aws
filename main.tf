@@ -167,6 +167,19 @@ resource "kubernetes_service_account" "this" {
   }
 }
 
+resource "kubernetes_config_map" "rules" {
+  data = {
+    "rules.yaml" = var.loki_rules
+  }
+  metadata {
+    labels = {
+      "app.kubernetes.io/managed-by" = "terraform"
+      "app.kubernetes.io/name"       = "loki-rules"
+    }
+    name      = "loki-rules"
+    namespace = local.k8s_namespace  
+  }
+}
 resource "kubernetes_config_map" "this" {
   data = {
     "loki.yaml" = yamlencode({
@@ -219,6 +232,24 @@ resource "kubernetes_config_map" "this" {
         enforce_metric_name        = false
         reject_old_samples         = true
         reject_old_samples_max_age = "168h"
+      }
+      ruler = {
+        alertmanager_url = "http://prometheus-kube-prometheus-alertmanager:9093"
+        storage = {
+          type = "local"
+          local = {
+            directory = "/etc/loki/rules/"
+          }
+        }
+        rule_path = "/tmp/scratch"
+        #enable_alertmanager_discovery = true
+        enable_api = true
+        enable_alertmanager_v2: true
+        ring = {
+          kvstore = {
+            store = "inmemory"
+          }
+        }
       }
     })
   }
@@ -298,7 +329,7 @@ resource "kubernetes_deployment" "this" {
             "iam.amazonaws.com/role" = aws_iam_role.this.arn
             # Whenever the config map changes, we need to re-create our pods.
             "config.loki.grafana.com/sha1" = sha1(kubernetes_config_map.this.data["loki.yaml"])
-
+            "rules.loki.grafana.com/sha1" = sha1(kubernetes_config_map.rules.data["rules.yaml"])
           },
           var.k8s_pod_annotations
         )
@@ -398,7 +429,7 @@ resource "kubernetes_deployment" "this" {
             }
           }
           security_context {
-            read_only_root_filesystem = true
+            read_only_root_filesystem = false
           }
           termination_message_path = "/dev/termination-log"
           volume_mount {
@@ -406,6 +437,11 @@ resource "kubernetes_deployment" "this" {
             name       = "config"
             read_only  = true
           }
+          volume_mount {
+            mount_path = "/etc/loki/rules"
+            name       = "rules"
+            read_only  = true
+          }          
         }
         dns_policy          = "ClusterFirst"
         host_network        = false
@@ -435,6 +471,12 @@ resource "kubernetes_deployment" "this" {
             name = kubernetes_config_map.this.metadata[0].name
           }
         }
+        volume {
+          name = "rules"
+          config_map {
+            name = kubernetes_config_map.rules.metadata[0].name
+          }
+        }      
       }
     }
   }
