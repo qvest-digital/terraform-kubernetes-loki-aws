@@ -123,3 +123,9 @@ variable "loki_rules" {
   #type        = string
   #description = "Solution name, e.g. 'app' or 'cluster'"
 }
+
+variable "retention_days" {
+  type        = number
+  description = "Number of retention days for the logs"
+  default = 21
+}
