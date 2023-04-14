@@ -1,13 +1,14 @@
 resource "kubernetes_ingress" "loki" {
   metadata {
-    name = "loki"
+    name      = "loki"
     namespace = "monitoring"
 
     annotations = {
-      "kubernetes.io/ingress.class"       = "nginx"
-      "nginx.ingress.kubernetes.io/auth-secret" = "loki-auth"
-      "nginx.ingress.kubernetes.io/auth-type"   = "basic"
-      "nginx.ingress.kubernetes.io/auth-realm" = "Authentication Required"
+      "kubernetes.io/ingress.class"                  = "nginx"
+      "nginx.ingress.kubernetes.io/auth-secret"      = "loki-auth"
+      "nginx.ingress.kubernetes.io/auth-type"        = "basic"
+      "nginx.ingress.kubernetes.io/auth-realm"       = "Authentication Required"
+      "nginx.ingress.kubernetes.io/service-upstream" = "true"
     }
   }
 
