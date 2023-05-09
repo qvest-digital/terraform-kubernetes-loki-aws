@@ -1,4 +1,4 @@
-resource "kubernetes_ingress" "loki" {
+resource "kubernetes_ingress_v1" "loki" {
   metadata {
     name      = "loki"
     namespace = "monitoring"
@@ -21,8 +21,12 @@ resource "kubernetes_ingress" "loki" {
           path = "/"
 
           backend {
-            service_name = "loki"
-            service_port = "3100"
+            service {
+              name = "loki"
+              port {
+                number = 3100
+              }
+            }
           }
         }
       }
